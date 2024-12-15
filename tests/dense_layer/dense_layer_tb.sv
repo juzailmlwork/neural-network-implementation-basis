@@ -36,10 +36,11 @@ reset = 0;
 img = test_data_a;
 #145
 enable = 1;
-//#200
-//reset = 1;
-//#50
-//reset = 0;
+#2500
+if (done) begin
+    if (layer_out[0] == 0) begin
+        $display("Finished pooling. First element of pool: %d.Assertion is correct", pool[0]);
+        end
 end
 
 always begin
