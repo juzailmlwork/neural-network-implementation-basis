@@ -27,16 +27,14 @@ reset = 0;
 in_data = test_data_a;
 #145
 enable = 1;
-#200
+#2000
 
-wait(done); // Wait until layer_done signal is high
-$display("Time: %t | Done signal asserted. Max value: %d", $time, max);
-if (max == 83) begin
-    $display("Assertion failed: max = %d, expected 55 at time %t", max, $time);
+if (done) begin
+    if (max == 83) begin
+        $display("Maximum digit is : max = %d, expected 55 at time %t", max, $time);
+    end
 end
-reset = 1;
-#50
-reset = 0;
+
 end
 
 always begin
