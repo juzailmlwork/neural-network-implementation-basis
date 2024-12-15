@@ -21,11 +21,11 @@ logic signed [15:0] test_data_a [0:195] = '{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
    
 reg clk, enable, reset, done;  
 reg signed [15:0] img [0:195];
-reg signed [15:0] out [0:31];
+reg signed [15:0] layer_out [0:31];
 reg signed [31:0] neuron_res [0:31];
 
 dense_layer1 layer1 (.clk(clk), .enable(enable), .reset(reset), .pooled_img(img),
-                     .neuron_res(neuron_res),.layer_out(out), .layer_done(done));
+                     .neuron_res(neuron_res),.layer_out(layer_out), .layer_done(done));
 
 initial begin
 clk = 0;
@@ -34,13 +34,14 @@ reset = 0;
 img = test_data_a;
 #145
 enable = 1;
-#2500
+#7500
 if (done) begin
     if (layer_out[0] == 0) begin
-        $display("Finished pooling. First element of pool: %d.Assertion is correct", pool[0]);
+        $display("Finished dense layer. First element of dense_later is: %d Assertion is correct", layer_out[0]);
         end
 end
 
+end
 always begin
 #10 clk = ~clk;
 end
