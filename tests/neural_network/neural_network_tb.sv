@@ -27,7 +27,7 @@ initial begin
 clk = 0;
 enable = 0;
 reset = 0;
-img = test_data_4;
+img = data_4;
 #145
 enable = 1;
 #2500
