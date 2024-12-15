@@ -27,15 +27,15 @@ initial begin
 clk = 0;
 enable = 0;
 reset = 0;
-img = test_data_d;
-//#145
-//enable = 1;
-//wait(NN_done == 1);
-//    $display("Predicted Digit: %d", digit_out);
-//#200
-//enable=0;
-#300
-reset=0;
+img = test_data_f;
+#145
+enable = 1;
+#2500
+if(NN_done) begin
+    if(digit_out==4)begin
+        $display("Predicted Digit: %d assertion is correct", digit_out);
+    end
+   end
 end
 
 always begin
