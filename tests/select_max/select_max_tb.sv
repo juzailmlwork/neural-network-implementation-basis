@@ -11,7 +11,6 @@ module select_max_tb;
 
 logic signed [15:0] test_data_a [0:9] = {0,0,5,85,0,10,0,0,0,0};
 
-localparam period = 20;
 reg clk, enable, reset, layer_done;  
 reg signed [15:0] in_data [0:9];
 reg signed [15:0] max;

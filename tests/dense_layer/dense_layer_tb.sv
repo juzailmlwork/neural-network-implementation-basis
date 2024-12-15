@@ -19,8 +19,6 @@ logic signed [15:0] test_data_a [0:195] = '{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
  127, 115, 83, 35, 0, 0, 0, 0, 0, 0, 0, 46, 64, 64, 26, 10, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
    
-localparam period = 20;
-
 reg clk, enable, reset, done;  
 reg signed [15:0] img [0:195];
 reg signed [15:0] out [0:31];
