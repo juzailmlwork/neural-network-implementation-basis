@@ -1,43 +1,49 @@
-module tb_bram_storage();
+module tb_bram_storage;
     reg clk;
     reg write_enable;
-    reg [15:0] addr;
     reg [7:0] data_in;
+    reg [15:0] addr;
     wire [7:0] data_out;
+    wire image_written;
+    reg read_request;
+    wire read_enable;
 
     bram_storage uut (
         .clk(clk),
         .write_enable(write_enable),
         .data_in(data_in),
         .addr(addr),
-        .data_out(data_out)
+        .data_out(data_out),
+        .image_written(image_written),
+        .read_request(read_request),
+        .read_enable(read_enable)
     );
 
-    // Clock generation
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; // 100 MHz clock
-    end
-
-    initial begin
-        // Test writing to BRAM
-        write_enable = 1;
-        addr = 16'h0000;
-        data_in = 8'h12;
-        #10; // Wait for 10ns
-
-        addr = 16'h0001;
-        data_in = 8'h34;
-        #10; // Wait for 10ns
-
-        // Test reading from BRAM
         write_enable = 0;
-        addr = 16'h0000;
-        #10; // Wait for 10ns
+        data_in = 0;
+        addr = 0;
+        read_request = 0;
 
-        addr = 16'h0001;
-        #10; // Wait for 10ns
+        // Write 784 bytes
+        repeat (784) begin
+            #10 write_enable = 1;
+            data_in = $random % 256;
+            addr = addr + 1;
+        end
 
-        $stop; // End simulation
+        #10 write_enable = 0;
+
+        // Read the data back
+        #10 read_request = 1;
+        addr = 16'd0;
+        repeat (784) begin
+            #10 addr = addr + 1;
+        end
+
+        #10 $finish;
     end
+
+    always #5 clk = ~clk; // 100 MHz clock
 endmodule
