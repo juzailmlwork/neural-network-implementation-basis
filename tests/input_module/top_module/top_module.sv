@@ -1,66 +1,59 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/15/2024 09:55:55 AM
-// Design Name: 
-// Module Name: top_module
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module top_module(
-    input clk,
-    input reset,
-    input rx,
-    output [7:0] led // Display received data on LEDs
+    input clk,          // System clock
+    input reset,        // Reset signal
+    input rx,           // UART receive line
+    input read_request, // Signal to request a read operation
+    input [15:0] addr,  // Address for read operations
+    output [7:0] data_out,  // Data output from BRAM
+    output image_written,   // Flag indicating image is completely written
+    output read_enable      // Signal indicating memory is readable
 );
-    wire [7:0] uart_data;
-    wire valid;
-    reg [15:0] addr = 0;
+
+    // Internal signals
+    wire [7:0] received_data;
+    wire valid_data;
+
+    reg [15:0] write_address;
     reg write_enable;
 
+    reg [15:0] pixel_counter; // Counter to track received pixels
+
     // Instantiate UART receiver
-    uart_receiver uart(
+    uart_receiver uart_inst (
         .clk(clk),
         .reset(reset),
         .rx(rx),
-        .data_out(uart_data),
-        .valid(valid)
+        .data_out(received_data),
+        .valid(valid_data)
     );
 
-    // Instantiate BRAM
-    bram_storage bram(
+    // Instantiate BRAM storage
+    bram_storage bram_inst (
         .clk(clk),
         .write_enable(write_enable),
-        .data_in(uart_data),
-        .addr(addr),
-        .data_out()
+        .data_in(received_data),
+        .addr(write_address),
+        .data_out(data_out),
+        .image_written(image_written),
+        .read_request(read_request),
+        .read_enable(read_enable)
     );
 
+    // Control logic for receiving and writing image data
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            addr <= 0;
-            write_enable <= 0;
-        end else if (valid) begin
-            write_enable <= 1;
-            addr <= addr + 1; // Increment address for the next byte
+            write_address <= 16'd0;
+            write_enable <= 1'b0;
+            pixel_counter <= 16'd0;
         end else begin
-            write_enable <= 0;
+            if (valid_data && pixel_counter < 16'd784) begin
+                write_enable <= 1'b1;           // Enable writing to BRAM
+                write_address <= pixel_counter; // Set write address
+                pixel_counter <= pixel_counter + 1; // Increment pixel counter
+            end else begin
+                write_enable <= 1'b0;           // Disable writing to BRAM
+            end
         end
     end
 
-    assign led = uart_data; // Show received byte on LEDs
 endmodule
-
