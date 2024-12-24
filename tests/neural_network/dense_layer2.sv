@@ -45,7 +45,7 @@ module dense_layer2(
     };
     
     wire dense2_en = enable;
-    reg dense2_done = 0;
+    wire dense2_done;
 
     
   dense_layer #(.NEURON_NB(10),.IN_SIZE(32), .WIDTH(8)) dense_layer2(.clk(clk), .layer_en(dense2_en), .reset(reset),
