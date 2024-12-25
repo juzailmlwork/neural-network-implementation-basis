@@ -9,15 +9,14 @@
 
 module select_max_tb;
 
-logic signed [15:0] test_data_a [0:9] = {0,0,5,85,0,10,0,0,0,0};
+logic signed [7:0] test_data_a [0:9] = {0,0,5,85,0,10,0,0,0,0};
 
 reg clk, enable, reset, layer_done;  
-reg signed [15:0] in_data [0:9];
-reg signed [15:0] max;
-reg [7:0] digit;
+reg signed [7:0] in_data [0:9];
+reg [3:0] digit;
 
 select_max s_max(.clk(clk), .reset(reset), .enable(enable), .in_data(in_data),
-                 .digit(digit), .layer_done(layer_done),.max(max));
+                 .digit(digit), .layer_done(layer_done));
 
 initial begin
 clk = 0;

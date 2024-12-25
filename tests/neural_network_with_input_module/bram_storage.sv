@@ -9,7 +9,7 @@ module bram_storage(
     input read_request,          // Signal to request a read operation
     output reg read_enable       // Signal indicating memory is readable
 );
-    reg [7:0] memory [0:65535];  // 64 KB memory
+    reg [7:0] memory [0:2048];  // 64 KB memory
     reg [15:0] write_counter;    // Counter to track number of writes
     reg [15:0] previous_addr;
 

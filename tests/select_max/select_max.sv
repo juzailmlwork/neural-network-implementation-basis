@@ -17,7 +17,7 @@
 * 
 ***********/
 
-module select_max # (parameter NEURON_NB=10, WIDTH=8)(
+module select_max # (parameter NEURON_NB=10, WIDTH=4)(
     input clk,
     input enable,
     input reset,

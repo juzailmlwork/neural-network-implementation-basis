@@ -20,7 +20,7 @@ module neural_network(
     input enable,
     input reset,
     input [7:0] img [0:783],
-    output [7:0] digit_out,
+    output [3:0] digit_out,
     output NN_done
     );
     

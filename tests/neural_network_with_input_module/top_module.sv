@@ -2,14 +2,11 @@ module top_module(
     input clk,          // System clock
     input reset,        // Reset signal
     input rx,           // UART receive line
-    input [15:0] addr,  // Address for read operations
     input read_request,
-    output [7:0] data_out,  // Data output from BRAM
-    output image_written,   // Flag indicating image is completely written
-    output read_enable,      // Signal indicating memory is readable
-    output valid_data,
+    output image_written,  
+    output read_enable, 
     output NN_done,
-    output [7:0] digit_out
+    output [3:0] digit_out
 );
 
     // Internal signals
@@ -22,10 +19,11 @@ module top_module(
     reg write_enable;
     reg already_done;
 
-    wire [7:0] digit_out;
+    wire [3:0] digit_out;
+    wire [7:0] data_out;
     wire NN_done;
     reg enable;
-    reg signed [7:0] img [0:783]; 
+    reg [7:0] img [0:783]; 
 
     reg [15:0] pixel_counter; // Counter to track received pixels
 
@@ -85,6 +83,7 @@ always @(posedge clk or posedge reset) begin
     if (reset) begin
         read_address <= 16'd0;
     end else if (image_written && read_address < 16'd784) begin
+//        img[read_address-1] <= data_out;  
         img[read_address-1] <= data_out;          
         $display("Recreating img[%d]: %d", read_address, data_out );
         read_address <= read_address + 1; 
