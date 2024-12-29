@@ -4,6 +4,7 @@ module bram_storage(
     input [7:0] data_in,
     input [15:0] addr,
     input [15:0] readaddr,
+    input reset,
     output reg [7:0] data_out,
     output reg image_written,    // Flag indicating image is completely written
     input read_request,          // Signal to request a read operation
@@ -21,7 +22,13 @@ module bram_storage(
     end
 
     always @(posedge clk) begin
-        if (write_enable) begin
+        if(reset) begin
+            write_counter = 0;
+            image_written = 0;
+            read_enable = 0;
+            previous_addr = 16'hFFFF;
+            
+    end else if (write_enable) begin
             if(addr != previous_addr) begin
                 previous_addr = addr;
                 $display("uploading data to memory: %d at address %d write counter is %d", data_in,addr,write_counter);

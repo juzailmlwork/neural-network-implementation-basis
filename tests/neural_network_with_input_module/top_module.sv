@@ -43,6 +43,7 @@ module top_module(
         .data_in(received_data),
         .addr(write_address),
         .readaddr(read_address),
+        .reset(reset),
         .data_out(data_out),
         .image_written(image_written),
         .read_request(read_request),

@@ -26,6 +26,6 @@ module relu #(parameter WIDTH = 8)(
     wire signed [4*WIDTH-1:0] temp;
     
     assign temp = (data_in > 0)? data_in:0; //Take data_in if > 0, 0 else
-    assign data_out = temp >> 8; //Rescale element and store into data_out
+    assign data_out = temp>> 4; //Rescale element and store into data_out
     
 endmodule

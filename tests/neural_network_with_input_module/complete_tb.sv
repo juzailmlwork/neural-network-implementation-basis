@@ -29,7 +29,7 @@ module tb_top_module;
         reset = 1;
         rx = 1; // Idle state
         read_request = 1;
-        data = data_8;
+        data = data_4;
         #20 reset = 0;
 
         // Transmit 784 bytes
@@ -44,11 +44,33 @@ module tb_top_module;
                   #40 rx = data[rx_index][6];
                   #40 rx = data[rx_index][7];
                   #40 rx = 1; // Stop bit
-                     $display("Index: %d, Data: %d", rx_index, data_8[rx_index]);
+                     $display("Index: %d, Data: %d", rx_index, data[rx_index]);
                     rx_index = rx_index + 1;
         end
 
         wait(NN_done);
+//        #50reset=1;
+//        #10 $finish;
+//        data = data_8;
+//        rx_index = 0;
+//        #20 reset = 0;
+        
+//                // Transmit 784 bytes
+//                repeat (784) begin
+//                          rx = 0; // Start bit
+//                          #40 rx = data[rx_index][0]; 
+//                          #40 rx = data[rx_index][1]; 
+//                          #40 rx = data[rx_index][2];
+//                          #40 rx = data[rx_index][3];
+//                          #40 rx = data[rx_index][4];
+//                          #40 rx = data[rx_index][5];
+//                          #40 rx = data[rx_index][6];
+//                          #40 rx = data[rx_index][7];
+//                          #40 rx = 1; // Stop bit
+//                             $display("Index: %d, Data: %d", rx_index, data[rx_index]);
+//                            rx_index = rx_index + 1;
+//                end
+//        wait(NN_done);
         #10 $finish;
     end
 
